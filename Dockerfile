@@ -9,11 +9,10 @@ RUN apt-get update \
 
 WORKDIR /app
 
-# TODO: DEPOIS TESTAR PARA VER SE FUNCIONA SEM ESSES COMANDOS COPY
-COPY ./api/mvn/ .mvn
-COPY ./api/mvnw ./api/pom.xml ./api/
-RUN ./api/mvnw dependency:go-offline
+COPY .mvn/ .mvn
+COPY mvnw pom.xml ./
+RUN ./mvnw dependency:go-offline
 
-COPY ./api/src ./src
+COPY src ./src
 
 CMD ["./mvnw", "spring-boot:run"]
