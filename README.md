@@ -37,7 +37,7 @@ git clone <repo>
 Renomar projeto da api
 
 ```
- mv .\API-Livro-de-Inspetores\ api
+mv API-Livro-de-Inspetores/ api
 ```
 
 Mover o Dockerfile para a api 
@@ -50,17 +50,19 @@ Alterar o valor perfil no arquivo "application.properties" para "test"
 <br> Relative Path:
 
 ```
-api\src\main\resources
+api/src/main/resources/
 ```
 
-Voltar para pasta raiz onde esta o docker-compose e subir os containers
-
-```
-cd ..
-```
+Voltar para pasta raiz onde esta o docker-compose.yml rode o comando:
 
 ```
 docker compose up
+```
+
+Caso ocorra erro de permissão, rode o comando:
+
+```
+sudo chmod -R 777 ./api
 ```
 
 ## ⚡ Conectando com o banco de dados

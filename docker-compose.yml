@@ -12,9 +12,9 @@ services:
             - POSTGRES_USER=postgres
             - POSTGRES_DB=postgres
         networks:
-            - api
+            - api-net
     api:
-        build: .
+        build: ./api
         container_name: api-dev
         volumes:
             - ./api:/app
@@ -28,9 +28,9 @@ services:
         depends_on:
             - postgres
         networks:
-            - api
+            - api-net
 
-# TODO: FUNCIONANDO, POREM ESTUDAR MAIS APROFUNDADO SOBRE NETWORK E VOLUMES!
+# TODO: MELHORAR OS PONTOS DE VOLUME E NETWORK
 networks:
-    api:
+    api-net:
         driver: bridge
