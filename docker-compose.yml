@@ -1,7 +1,8 @@
 # SETUP PARA API DE DESENVOLVIMENTO DA DITECI
-version: '1.0'
+version: '1.2'
 services:
     postgres:
+        container_name: postgres
         image: postgres
         volumes:
             - '.:/api'
