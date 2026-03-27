@@ -1,0 +1,39 @@
+# DOCKER COMPOSE TO PRODUCTION
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: postgres
+    restart: always
+    ports:
+      - "${POSTGRES_PORT}:5432"
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - pgdata:${POSTGRES_VOLUME_PATH}
+    networks:
+      - ${NETWORK_NAME}
+
+  api:
+    build: ./api
+    container_name: api
+    restart: always
+    ports:
+      - "${API_PORT}:8080"
+    environment:
+      SPRING_DATASOURCE_URL: ${SPRING_DATASOURCE_URL}
+      SPRING_DATASOURCE_USERNAME: ${SPRING_DATASOURCE_USERNAME}
+      SPRING_DATASOURCE_PASSWORD: ${SPRING_DATASOURCE_PASSWORD}
+      JAVA_OPTS: ${JAVA_OPTS}
+    depends_on:
+      - postgres
+    networks:
+      - ${NETWORK_NAME}
+
+volumes:
+  pgdata:
+
+networks:
+  ${NETWORK_NAME}:
+    driver: bridge

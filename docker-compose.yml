@@ -1,5 +1,4 @@
-# SETUP PARA API DE DESENVOLVIMENTO DA DITECI
-version: '1.2'
+# DOCKER COMPOSE TO DEVELOPMENT
 services:
     postgres:
         container_name: postgres
