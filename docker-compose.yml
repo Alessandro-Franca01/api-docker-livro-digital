@@ -1,36 +1,39 @@
-# DOCKER COMPOSE TO DEVELOPMENT
+# DOCKER COMPOSE TO PRODUCTION
 services:
-    postgres:
-        container_name: postgres
-        image: postgres
-        volumes:
-            - '.:/api'
-        ports:
-            - "2029:5432"
-        environment:
-            - POSTGRES_PASSWORD=root
-            - POSTGRES_USER=postgres
-            - POSTGRES_DB=postgres
-        networks:
-            - api-net
-    api:
-        build: ./api
-        container_name: api-dev
-        volumes:
-            - ./api:/app
-        environment:
-            - DB_SERVER=dev-postgres
-            - POSTGRES_DB=postgres
-            - POSTGRES_USER=postgres
-            - POSTGRES_PASSWORD=root
-        ports:
-            - "8080:8080"
-        depends_on:
-            - postgres
-        networks:
-            - api-net
+  postgres:
+    image: postgres:15-alpine
+    container_name: postgres
+    restart: always
+    ports:
+      - "${POSTGRES_PORT}:5432"
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - pgdata:${POSTGRES_VOLUME_PATH}
+    networks:
+      - api-net
 
-# TODO: MELHORAR OS PONTOS DE VOLUME E NETWORK
+  api:
+    build: ./api
+    container_name: api
+    restart: always
+    ports:
+      - "${API_PORT}:8080"
+    environment:
+      SPRING_DATASOURCE_URL: ${SPRING_DATASOURCE_URL}
+      SPRING_DATASOURCE_USERNAME: ${SPRING_DATASOURCE_USERNAME}
+      SPRING_DATASOURCE_PASSWORD: ${SPRING_DATASOURCE_PASSWORD}
+      JAVA_OPTS: ${JAVA_OPTS}
+    depends_on:
+      - postgres
+    networks:
+      - api-net
+
+volumes:
+  pgdata:
+
 networks:
-    api-net:
-        driver: bridge
+  api-net:
+    driver: bridge

@@ -13,7 +13,7 @@ services:
     volumes:
       - pgdata:${POSTGRES_VOLUME_PATH}
     networks:
-      - ${NETWORK_NAME}
+      - api-net
 
   api:
     build: ./api
@@ -29,11 +29,11 @@ services:
     depends_on:
       - postgres
     networks:
-      - ${NETWORK_NAME}
+      - api-net
 
 volumes:
   pgdata:
 
 networks:
-  ${NETWORK_NAME}:
+  api-net:
     driver: bridge
